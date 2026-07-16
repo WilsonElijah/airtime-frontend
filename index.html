@@ -154,8 +154,8 @@
             statusMsg.className = '';
 
             try {
-                // REPLACE THIS URL WITH YOUR LIVE RENDER URL
-                const response = await fetch('https://airtime-backend-zuob.onrender.com', {
+                // The exact Render URL patched in perfectly
+                const response = await fetch('https://airtime-backend-zuob.onrender.com/api/dispense-airtime', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ phoneNumber: phone, network, amount })
