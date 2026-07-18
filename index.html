@@ -363,7 +363,7 @@
         <h3>Recipients</h3>
         <div class="recipients-wrapper" id="recipients-wrapper">
             <!-- Pills will go here -->
-            <input type="tel" class="recipients-input" id="recipients-input" placeholder="Enter number & press Space">
+            <input type="tel" class="recipients-input" id="recipients-input" placeholder="Enter number">
         </div>
 
         <h3>Select provider</h3>
@@ -454,7 +454,7 @@
         function addRecipient(value) {
             const num = value.replace(/[^0-9+]/g, '');
             if (num.length >= 10 && !recipients.includes(num)) {
-                recipients.push(num);
+                recipients = [num]; // Restrict to only 1 recipient
                 renderPills();
             }
             inputEl.value = '';
@@ -480,6 +480,13 @@
                 `;
                 wrapperEl.insertBefore(pill, inputEl);
             });
+
+            if (recipients.length >= 1) {
+                inputEl.style.display = 'none';
+            } else {
+                inputEl.style.display = 'block';
+                inputEl.focus();
+            }
         }
 
         // --- Provider Selection ---
