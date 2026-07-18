@@ -429,6 +429,12 @@
     </div>
 
     <script>
+        // -------------------------------------------------------------
+        // IMPORTANT: Replace this with your actual Render Backend URL
+        // Example: 'https://airtime-backend-xyz.onrender.com'
+        // -------------------------------------------------------------
+        const RENDER_BACKEND_URL = 'https://YOUR-RENDER-APP-URL.onrender.com';
+
         let recipients = [];
         let selectedNetwork = '';
         const inputEl = document.getElementById('recipients-input');
@@ -544,7 +550,7 @@
             
             const apiEndpoint = isLocal 
                 ? 'http://localhost:5000/api/dispense-airtime' 
-                : '/api/dispense-airtime';
+                : `${RENDER_BACKEND_URL}/api/dispense-airtime`;
 
             // Process each recipient sequentially
             for (let i = 0; i < recipients.length; i++) {
@@ -582,7 +588,8 @@
                 } catch (error) {
                     const statusEl = document.getElementById(statusId);
                     statusEl.className = 'status-item error';
-                    statusEl.innerHTML = `✗ Error: Network failure for ${phone}`;
+                    statusEl.innerHTML = `✗ Error: Cannot connect to backend (Network Failure). Make sure backend is running.`;
+                    console.error("Fetch Error:", error);
                 }
             }
 
