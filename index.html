@@ -4,21 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Airtime Dispenser</title>
-    <!-- Prevent favicon.ico 404 console errors -->
+    <title>Airtime Giveaway Claim</title>
     <link rel="icon" href="data:,">
     <!-- Premium Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0b0f19;
-            --card-bg: #111827;
-            --input-bg: #1f2937;
-            --border-color: #374151;
-            --text-primary: #f9fafb;
-            --text-secondary: #9ca3af;
-            --accent: #6366f1;
-            --accent-hover: #4f46e5;
+            --bg-color: #050505;
+            --card-bg: rgba(20, 20, 25, 0.7);
+            --input-bg: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --accent: #d946ef; /* Vibrant pink/purple */
+            --accent-hover: #c026d3;
+            --accent-gradient: linear-gradient(135deg, #d946ef, #8b5cf6);
             --success: #10b981;
             --error: #ef4444;
         }
@@ -33,6 +33,9 @@
 
         body {
             background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(217, 70, 239, 0.15), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.15), transparent 25%);
             color: var(--text-primary);
             display: flex;
             justify-content: center;
@@ -43,248 +46,127 @@
 
         .app-container {
             width: 100%;
-            max-width: 420px;
+            max-width: 450px;
             background: var(--card-bg);
-            border-radius: 24px;
-            padding: 30px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        h3 {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            margin-bottom: 12px;
-            margin-top: 24px;
-        }
-
-        h3:first-child {
-            margin-top: 0;
-        }
-
-        /* Recipients Input */
-        .recipients-wrapper {
-            background: var(--input-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 8px 12px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            align-items: center;
-            min-height: 54px;
-            transition: all 0.3s ease;
-        }
-
-        .recipients-wrapper:focus-within {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
-        }
-
-        .recipient-pill {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-primary);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            animation: popIn 0.2s ease-out;
-        }
-
-        .recipient-pill button {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            font-size: 1rem;
-            line-height: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: color 0.2s;
-        }
-
-        .recipient-pill button:hover {
-            color: var(--error);
-        }
-
-        .recipients-input {
-            background: transparent;
-            border: none;
-            color: var(--text-primary);
-            font-size: 0.95rem;
-            outline: none;
-            flex: 1;
-            min-width: 120px;
-            padding: 6px 0;
-        }
-
-        .recipients-input::placeholder {
-            color: var(--text-secondary);
-        }
-
-        /* Providers Grid */
-        .providers-grid {
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-        }
-
-        .provider-item {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: #ffffff;
-            cursor: pointer;
-            position: relative;
-            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 3px solid transparent;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .provider-item:hover {
-            transform: translateY(-2px) scale(1.05);
-        }
-
-        .provider-item.active {
-            border-color: var(--accent);
-            box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
-            transform: scale(1.05);
-        }
-
-        .provider-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* CSS fallback logos if images fail */
-        .provider-fallback {
-            font-size: 0.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        .fallback-mtn { background: #ffcc00; color: #000; }
-        .fallback-glo { background: #009900; color: #fff; font-style: italic; text-transform: lowercase; font-size: 1.2rem;}
-        .fallback-9mobile { background: #006600; color: #fff; }
-        .fallback-airtel { background: #ff0000; color: #fff; text-transform: lowercase; }
-
-        /* Top Deals */
-        .deals-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-        }
-
-        .deal-card {
-            background: var(--input-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 12px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 40px 30px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             position: relative;
             overflow: hidden;
         }
-
-        .deal-card::before {
+        
+        .app-container::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: rgba(255, 255, 255, 0.05);
+            top: 0; left: 0; right: 0; height: 4px;
+            background: var(--accent-gradient);
         }
 
-        .deal-card.active {
-            border-color: var(--accent);
-            background: rgba(99, 102, 241, 0.1);
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
         }
 
-        .deal-card.active::before {
-            background: var(--accent);
+        .celebrate-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            animation: bounce 2s infinite ease-in-out;
+            display: inline-block;
         }
 
-        .deal-card span {
-            display: block;
-            font-size: 0.7rem;
-            color: var(--accent);
-            margin-bottom: 4px;
-            font-weight: 500;
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
-        .deal-card h4 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--text-primary);
+        h2 {
+            font-weight: 800;
+            font-size: 2rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
         }
 
-        /* Amount Input */
-        .amount-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .amount-wrapper span {
-            position: absolute;
-            left: 16px;
-            font-size: 1.2rem;
+        .subtitle {
+            font-size: 1rem;
             color: var(--text-secondary);
-            font-weight: 500;
+            font-weight: 400;
+            line-height: 1.5;
         }
 
-        .amount-input {
+        /* Form Group */
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-field {
             width: 100%;
             background: var(--input-bg);
             border: 1px solid var(--border-color);
             border-radius: 16px;
-            padding: 16px 16px 16px 36px;
-            font-size: 1.2rem;
-            font-weight: 600;
+            padding: 16px 20px;
+            font-size: 1rem;
             color: var(--text-primary);
             outline: none;
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .amount-input:focus {
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .input-field:focus {
             border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 4px rgba(217, 70, 239, 0.15);
+        }
+        
+        textarea.input-field {
+            resize: vertical;
+            min-height: 80px;
         }
 
         /* Continue Button */
         .continue-btn {
             width: 100%;
-            background: var(--accent);
+            background: var(--accent-gradient);
             color: white;
             border: none;
-            padding: 16px;
+            padding: 18px;
             border-radius: 16px;
             font-size: 1.1rem;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            margin-top: 30px;
+            margin-top: 10px;
             transition: all 0.3s;
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 10px;
+            box-shadow: 0 10px 25px -5px rgba(217, 70, 239, 0.4);
         }
 
         .continue-btn:hover:not(:disabled) {
-            background: var(--accent-hover);
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px -10px rgba(99, 102, 241, 0.6);
+            box-shadow: 0 15px 30px -5px rgba(217, 70, 239, 0.5);
+            filter: brightness(1.1);
         }
 
         .continue-btn:active:not(:disabled) {
@@ -295,48 +177,57 @@
             opacity: 0.7;
             cursor: not-allowed;
             filter: grayscale(0.5);
+            box-shadow: none;
         }
 
         /* Status Area */
         .status-area {
-            margin-top: 20px;
+            margin-top: 24px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 12px;
         }
 
         .status-item {
-            padding: 12px;
-            border-radius: 12px;
-            font-size: 0.85rem;
+            padding: 16px;
+            border-radius: 16px;
+            font-size: 0.95rem;
             display: flex;
-            align-items: center;
-            gap: 10px;
-            animation: popIn 0.3s ease-out;
+            align-items: flex-start;
+            gap: 12px;
+            animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            opacity: 0;
+            transform: translateY(20px);
+            line-height: 1.4;
         }
 
         .status-item.success {
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            color: var(--success);
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #34d399;
         }
 
         .status-item.error {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            color: var(--error);
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #f87171;
         }
 
         .status-item.pending {
-            background: rgba(99, 102, 241, 0.1);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            color: var(--accent);
+            background: rgba(217, 70, 239, 0.15);
+            border: 1px solid rgba(217, 70, 239, 0.3);
+            color: #e879f9;
+        }
+
+        .status-icon {
+            font-size: 1.2rem;
+            margin-top: 2px;
         }
 
         /* Spinner */
         .spinner {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             border: 3px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
             border-top-color: #fff;
@@ -348,9 +239,30 @@
             to { transform: rotate(360deg); }
         }
 
-        @keyframes popIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .detected-network {
+            position: absolute;
+            right: 16px;
+            top: 40px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.1);
+            color: var(--text-secondary);
+            pointer-events: none;
+            transition: all 0.3s;
+            opacity: 0;
+        }
+        
+        .detected-network.show {
+            opacity: 1;
         }
 
     </style>
@@ -359,246 +271,174 @@
 <body>
 
     <div class="app-container">
-        <h2 style="text-align: center; margin-bottom: 24px; font-weight: 700; font-size: 1.8rem; color: var(--text-primary); letter-spacing: -0.5px;">Airtime Dispenser</h2>
-        <h3>Recipients</h3>
-        <div class="recipients-wrapper" id="recipients-wrapper">
-            <!-- Pills will go here -->
-            <input type="tel" class="recipients-input" id="recipients-input" placeholder="Enter number">
+        <div class="header">
+            <div class="celebrate-icon">🎉</div>
+            <h2>Congratulations!</h2>
+            <p class="subtitle">You've won <strong>₦100 Airtime</strong>.<br>Fill the form below to claim it instantly.</p>
         </div>
 
-        <h3>Select provider</h3>
-        <div class="providers-grid" id="providers-grid">
-            <div class="provider-item" data-network="MTN" onclick="selectProvider(this, 'MTN')">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/New-mtn-logo.jpg/512px-New-mtn-logo.jpg" alt="MTN" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div class="provider-fallback fallback-mtn" style="display:none; width:100%; height:100%; align-items:center; justify-content:center;">MTN</div>
-            </div>
-            <div class="provider-item" data-network="Glo" onclick="selectProvider(this, 'Glo')">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/Glo_button.png" alt="Glo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div class="provider-fallback fallback-glo" style="display:none; width:100%; height:100%; align-items:center; justify-content:center;">glo</div>
-            </div>
-            <div class="provider-item" data-network="9Mobile" onclick="selectProvider(this, '9Mobile')">
-                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f6/9mobile_Logo.svg/512px-9mobile_Logo.svg.png" alt="9Mobile" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div class="provider-fallback fallback-9mobile" style="display:none; width:100%; height:100%; align-items:center; justify-content:center;">9mobile</div>
-            </div>
-            <div class="provider-item" data-network="Airtel" onclick="selectProvider(this, 'Airtel')">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Airtel_logo.svg/512px-Airtel_logo.svg.png" alt="Airtel" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div class="provider-fallback fallback-airtel" style="display:none; width:100%; height:100%; align-items:center; justify-content:center;">airtel</div>
-            </div>
+        <div class="form-group">
+            <label for="claim-name">Full Name</label>
+            <input type="text" class="input-field" id="claim-name" placeholder="John Doe">
         </div>
 
-        <h3>Top deals</h3>
-        <div class="deals-grid" id="deals-grid">
-            <div class="deal-card" onclick="selectDeal(this, 100)">
-                <span>Quick Topup</span>
-                <h4>₦100</h4>
-            </div>
-            <div class="deal-card" onclick="selectDeal(this, 200)">
-                <span>Quick Topup</span>
-                <h4>₦200</h4>
-            </div>
-            <div class="deal-card" onclick="selectDeal(this, 500)">
-                <span>Quick Topup</span>
-                <h4>₦500</h4>
-            </div>
-            <div class="deal-card" onclick="selectDeal(this, 1000)">
-                <span>Quick Topup</span>
-                <h4>₦1000</h4>
-            </div>
-            <div class="deal-card" onclick="selectDeal(this, 2000)">
-                <span>Quick Topup</span>
-                <h4>₦2000</h4>
-            </div>
-            <div class="deal-card" onclick="selectDeal(this, 5000)">
-                <span>Quick Topup</span>
-                <h4>₦5000</h4>
-            </div>
+        <div class="form-group">
+            <label for="claim-email">Email Address</label>
+            <input type="email" class="input-field" id="claim-email" placeholder="john@example.com">
         </div>
 
-        <h3>Enter amount</h3>
-        <div class="amount-wrapper">
-            <span>₦</span>
-            <input type="number" class="amount-input" id="custom-amount" placeholder="e.g. 1000" min="100" oninput="clearDealSelection()">
+        <div class="form-group">
+            <label for="claim-phone">Phone Number</label>
+            <input type="tel" class="input-field" id="claim-phone" placeholder="0803 000 0000" oninput="detectNetworkLocal()">
+            <div id="network-badge" class="detected-network">Detecting...</div>
         </div>
 
-        <button class="continue-btn" id="continue-btn" onclick="processTransactions()">
+        <div class="form-group">
+            <label for="claim-address">Residential Address</label>
+            <textarea class="input-field" id="claim-address" placeholder="Enter your full address"></textarea>
+        </div>
+
+        <button class="continue-btn" id="claim-btn" onclick="submitClaim()">
             <span class="spinner" id="btn-spinner"></span>
-            <span id="btn-text">Continue</span>
+            <span id="btn-text">Claim My ₦100 Airtime</span>
         </button>
 
         <div class="status-area" id="status-area"></div>
     </div>
 
     <script>
-        // -------------------------------------------------------------
-        // IMPORTANT: Replace this with your actual Render Backend URL
-        // Example: 'https://airtime-backend-xyz.onrender.com'
-        // -------------------------------------------------------------
         const RENDER_BACKEND_URL = 'https://airtime-backend-zuob.onrender.com';
-
-        let recipients = [];
-        let selectedNetwork = '';
-        const inputEl = document.getElementById('recipients-input');
-        const wrapperEl = document.getElementById('recipients-wrapper');
-        const amountEl = document.getElementById('custom-amount');
-        const statusArea = document.getElementById('status-area');
-
-        // --- Recipient Pill Logic ---
-        inputEl.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' || e.key === ' ' || e.key === ',') {
-                e.preventDefault();
-                addRecipient(this.value);
+        
+        // Simple client-side detection for UI feedback only (Backend does the real validation)
+        function getNetwork(phone) {
+            const num = phone.replace(/[^0-9]/g, '');
+            if (num.length < 4) return null;
+            
+            let prefix = num.substring(0, 4);
+            // Handle +234
+            if (num.startsWith('234') && num.length > 4) {
+                prefix = '0' + num.substring(3, 6);
             }
-        });
-
-        // Add recipient on blur as well
-        inputEl.addEventListener('blur', function() {
-            if (this.value.trim() !== '') {
-                addRecipient(this.value);
-            }
-        });
-
-        function addRecipient(value) {
-            const num = value.replace(/[^0-9+]/g, '');
-            if (num.length >= 10 && !recipients.includes(num)) {
-                recipients = [num]; // Restrict to only 1 recipient
-                renderPills();
-            }
-            inputEl.value = '';
+            
+            const mtn = ['0803','0806','0703','0706','0813','0816','0810','0814','0903','0906','0913','0916'];
+            const glo = ['0805','0807','0705','0815','0811','0905','0915'];
+            const airtel = ['0802','0808','0708','0812','0701','0902','0901','0904','0907','0912'];
+            const mobile9 = ['0809','0818','0817','0909','0908'];
+            
+            if (mtn.includes(prefix)) return 'MTN';
+            if (glo.includes(prefix)) return 'Glo';
+            if (airtel.includes(prefix)) return 'Airtel';
+            if (mobile9.includes(prefix)) return '9Mobile';
+            
+            return null;
         }
 
-        function removeRecipient(index) {
-            recipients.splice(index, 1);
-            renderPills();
-        }
-
-        function renderPills() {
-            // Remove existing pills
-            const existing = wrapperEl.querySelectorAll('.recipient-pill');
-            existing.forEach(el => el.remove());
-
-            // Add new pills before the input
-            recipients.forEach((num, idx) => {
-                const pill = document.createElement('div');
-                pill.className = 'recipient-pill';
-                pill.innerHTML = `
-                    ${num}
-                    <button type="button" onclick="removeRecipient(${idx})">&times;</button>
-                `;
-                wrapperEl.insertBefore(pill, inputEl);
-            });
-
-            if (recipients.length >= 1) {
-                inputEl.style.display = 'none';
+        function detectNetworkLocal() {
+            const phone = document.getElementById('claim-phone').value;
+            const badge = document.getElementById('network-badge');
+            const network = getNetwork(phone);
+            
+            if (phone.length > 3) {
+                badge.classList.add('show');
+                if (network) {
+                    badge.textContent = network;
+                    badge.style.color = '#fff';
+                    // Colors
+                    if(network === 'MTN') badge.style.background = '#eab308'; // Yellow
+                    if(network === 'Glo') badge.style.background = '#22c55e'; // Green
+                    if(network === 'Airtel') badge.style.background = '#ef4444'; // Red
+                    if(network === '9Mobile') badge.style.background = '#15803d'; // Dark Green
+                } else {
+                    badge.textContent = 'Unknown';
+                    badge.style.background = 'rgba(255,255,255,0.1)';
+                    badge.style.color = 'var(--text-secondary)';
+                }
             } else {
-                inputEl.style.display = 'block';
-                inputEl.focus();
+                badge.classList.remove('show');
             }
         }
 
-        // --- Provider Selection ---
-        function selectProvider(el, network) {
-            const items = document.querySelectorAll('.provider-item');
-            items.forEach(item => item.classList.remove('active'));
-            el.classList.add('active');
-            selectedNetwork = network;
-        }
-
-        // --- Deals Selection ---
-        function selectDeal(el, amount) {
-            const cards = document.querySelectorAll('.deal-card');
-            cards.forEach(card => card.classList.remove('active'));
-            el.classList.add('active');
-            amountEl.value = amount;
-        }
-
-        function clearDealSelection() {
-            const cards = document.querySelectorAll('.deal-card');
-            cards.forEach(card => card.classList.remove('active'));
-        }
-
-        // --- Transaction Processing ---
-        async function processTransactions() {
-            const amount = amountEl.value;
+        async function submitClaim() {
+            const name = document.getElementById('claim-name').value.trim();
+            const email = document.getElementById('claim-email').value.trim();
+            const phone = document.getElementById('claim-phone').value.trim();
+            const address = document.getElementById('claim-address').value.trim();
+            const statusArea = document.getElementById('status-area');
 
             // Validation
-            if (recipients.length === 0) {
-                alert("Please add at least one recipient.");
-                return;
-            }
-            if (!selectedNetwork) {
-                alert("Please select a network provider.");
-                return;
-            }
-            if (!amount || amount < 100) {
-                alert("Please enter a valid amount (minimum ₦100).");
+            if (!name || !email || !phone || !address) {
+                showStatus('error', '⚠️', 'Please fill in all fields to claim your airtime.');
                 return;
             }
 
             // UI State Update
-            const btn = document.getElementById('continue-btn');
+            const btn = document.getElementById('claim-btn');
             const btnText = document.getElementById('btn-text');
             const spinner = document.getElementById('btn-spinner');
-            
-            btn.disabled = true;
-            btnText.textContent = 'Processing...';
-            spinner.style.display = 'block';
-            statusArea.innerHTML = ''; // Clear previous status
 
-            const isLocal = window.location.hostname === 'localhost' || 
-                            window.location.hostname === '127.0.0.1' || 
-                            window.location.protocol === 'file:';
-            
-            const apiEndpoint = isLocal 
-                ? 'http://localhost:5000/api/dispense-airtime' 
+            btn.disabled = true;
+            btnText.textContent = 'Verifying & Sending...';
+            spinner.style.display = 'block';
+            statusArea.innerHTML = ''; 
+
+            const isLocal = window.location.hostname === 'localhost' ||
+                window.location.hostname === '127.0.0.1' ||
+                window.location.protocol === 'file:';
+
+            const apiEndpoint = isLocal
+                ? 'http://localhost:5000/api/dispense-airtime'
                 : `${RENDER_BACKEND_URL}/api/dispense-airtime`;
 
-            // Process each recipient sequentially
-            for (let i = 0; i < recipients.length; i++) {
-                const phone = recipients[i];
-                const statusId = `status-${i}`;
-                
-                // Add pending status box
-                statusArea.insertAdjacentHTML('beforeend', `
-                    <div class="status-item pending" id="${statusId}">
-                        <i class="fas fa-spinner fa-spin"></i> Sending ₦${amount} to ${phone}...
-                    </div>
-                `);
+            showStatus('pending', '⏳', 'Processing your claim... Please wait.');
 
-                try {
-                    const response = await fetch(apiEndpoint, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            phoneNumber: phone,
-                            network: selectedNetwork,
-                            amount: amount
-                        })
-                    });
+            try {
+                const response = await fetch(apiEndpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        phoneNumber: phone,
+                        address: address
+                        // Network and Amount are handled by backend
+                    })
+                });
 
-                    const data = await response.json();
-                    const statusEl = document.getElementById(statusId);
+                const data = await response.json();
+                statusArea.innerHTML = ''; // clear pending
 
-                    if (data.success || response.ok) {
-                        statusEl.className = 'status-item success';
-                        statusEl.innerHTML = `✓ Success: ₦${amount} sent to ${phone}`;
-                    } else {
-                        statusEl.className = 'status-item error';
-                        statusEl.innerHTML = `✗ Failed: ${data.message || 'Transaction failed'} for ${phone}`;
-                    }
-                } catch (error) {
-                    const statusEl = document.getElementById(statusId);
-                    statusEl.className = 'status-item error';
-                    statusEl.innerHTML = `✗ Error: Cannot connect to backend (Network Failure). Make sure backend is running.`;
-                    console.error("Fetch Error:", error);
+                if (response.ok && data.success) {
+                    showStatus('success', '✅', `Awesome! ₦100 airtime has been sent to ${phone}. Enjoy!`);
+                    // Optionally clear form
+                    document.getElementById('claim-name').value = '';
+                    document.getElementById('claim-email').value = '';
+                    document.getElementById('claim-phone').value = '';
+                    document.getElementById('claim-address').value = '';
+                    document.getElementById('network-badge').classList.remove('show');
+                } else {
+                    showStatus('error', '❌', data.message || 'We could not process your claim at this time.');
                 }
+            } catch (error) {
+                statusArea.innerHTML = ''; // clear pending
+                showStatus('error', '⚠️', 'Network error. Make sure you are connected to the internet and the server is running.');
+                console.error("Fetch Error:", error);
             }
 
             // Restore UI
             btn.disabled = false;
-            btnText.textContent = 'Continue';
+            btnText.textContent = 'Claim My ₦100 Airtime';
             spinner.style.display = 'none';
+        }
+        
+        function showStatus(type, icon, message) {
+            const statusArea = document.getElementById('status-area');
+            statusArea.innerHTML = `
+                <div class="status-item ${type}">
+                    <div class="status-icon">${icon}</div>
+                    <div>${message}</div>
+                </div>
+            `;
         }
     </script>
 </body>
-
 </html>
